@@ -1,0 +1,57 @@
+EIGRP -> OSPF
+router ospf 1 metrics 10000 100 255 1 1500
+
+OSPF -> EIGRP
+router eigrp 100 subnets 
+
+
+// SSH + TELNET 
+configure terminal
+hostname R1
+ip domain-name mynet.local
+username admin privilege 15 secret admin123
+crypto key generate rsa
+1024
+
+ip ssh version 2
+line vty 0 4
+login local
+transport input all
+exit
+
+// TELNET
+Router> enable
+Router# configure terminal
+! Set hostname (optional)
+Router(config)# hostname R1
+! Set enable password
+R1(config)# enable secret cisco123
+! Configure interface
+! Create local user (optional)
+R1(config)# username admin privilege 15 secret admin123
+! Configure Telnet on VTY lines
+R1(config)# line vty 0 4
+R1(config-line)# password telnet123
+R1(config-line)# login
+R1(config-line)# transport input telnet
+R1(config-line)# exit
+
+// SSH
+Router> enable
+Router# configure terminal
+! Set hostname and domain name (required)
+Router(config)# hostname R1
+R1(config)# ip domain-name mynet.local
+! Create local user for SSH login
+R1(config)# username admin privilege 15 secret admin123
+! Configure interface
+! Generate RSA keys
+R1(config)# crypto key generate rsa
+How many bits in the modulus [512]: 1024
+! Force SSH version 2
+R1(config)# ip ssh version 2
+! Configure VTY lines for SSH
+R1(config)# line vty 0 4
+R1(config-line)# login local
+R1(config-line)# transport input ssh
+R1(config-line)# exit
